@@ -41,7 +41,18 @@ export default {
         commands[item.command] = () => (new Howl({ src: item.src })).play()
       })
 
-      annyang.addCommands(commands)
+      annyang.addCallback('result', (phrases) => {
+        const bestMatch = phrases[0]
+        let count = 0
+
+        bestMatch.split(' ').map(word => {
+          if (commands.hasOwnProperty(word)) {
+            setTimeout(() => commands[word](), count)
+            count += 2000
+          }
+        })
+      })
+
       annyang.start({ autoRestart: true, continuous: true })
     }
   }
