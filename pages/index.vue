@@ -1,92 +1,65 @@
 <template>
   <section class="container">
     <div>
-      <logo/>
       <h1 class="title">
-        fantasy-sound-assistant
+        Fantasy Sound Assistant
       </h1>
-      <h2 class="subtitle">
-        Fantasy sound assistant player with voice recognition
-      </h2>
-      <div class="links">
-        <a href="https://nuxtjs.org/" target="_blank" class="button--green">Documentation</a>
-        <a href="https://github.com/nuxt/nuxt.js" target="_blank" class="button--grey">GitHub</a>
-      </div>
+      <voice-recognizer/>
     </div>
   </section>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-// Load Howler library
-import { Howl } from 'howler'
-import soundboard from '../static/sounds'
-
-// Load annyang library
-if (process.BROWSER_BUILD) {
-  window.annyang = require('annyang')
-}
+import VoiceRecognizer from '~/components/VoiceRecognizer'
 
 export default {
   components: {
-    Logo
-  },
-
-  mounted () {
-    const annyang = (window || {}).annyang
-
-    if (annyang) {
-      const commands = {}
-      soundboard.map(item => {
-        commands[item.command] = () => (new Howl({ src: item.src })).play()
-      })
-
-      annyang.addCallback('result', (phrases) => {
-        const bestMatch = phrases[0]
-        let count = 0
-
-        bestMatch.split(' ').map(word => {
-          if (commands.hasOwnProperty(word)) {
-            setTimeout(() => commands[word](), count)
-            count += 2000
-          }
-        })
-      })
-
-      annyang.start({ autoRestart: true, continuous: true })
-    }
+    VoiceRecognizer
   }
 }
 </script>
 
 <style>
-.container
-{
+.container {
+  background: #111 url(~static/images/bg.png) center no-repeat;
+  background-size: cover;
+  color: white;
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
+  filter: grayscale(1);
+  animation: colorize 1s linear forwards 1s;
 }
-.title
-{
+
+.title {
   font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 1 */
-  display: block;
   font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
+  color: #EEE;
+  line-height: 1;
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+  text-shadow: 2px 2px 0 #000;
+  font-size: 5rem;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  animation: fadeIn 2s linear forwards 2s;
 }
-.subtitle
-{
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
+
+
+@keyframes fadeIn {
+  100% {
+    opacity: 1;
+  }
 }
-.links
-{
-  padding-top: 15px;
+
+
+@keyframes colorize {
+  100% {
+    filter: none;
+  }
 }
+
+
 </style>
