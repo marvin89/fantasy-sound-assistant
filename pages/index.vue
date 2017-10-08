@@ -21,7 +21,7 @@ export default {
 
 <style>
 .container {
-  background: #111 url(~static/images/bg.png) center no-repeat;
+  background: #111 url(~static/images/oota-bg.jpg) center no-repeat;
   background-size: cover;
   color: white;
   min-height: 100vh;
